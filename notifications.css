@@ -1,0 +1,85 @@
+#standartNotifications {
+    width: 40vw; /* Increased width */
+    height: auto;
+    bottom: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    position: fixed;
+    pointer-events: none;
+    z-index: 1000;
+    gap: 10px;
+}
+
+.notification {
+    background-color: transparent;
+    border-radius: 6px;
+    padding: 20px 30px; /* Increased padding */
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-shadow: 2px 2px 4px #000000;
+    
+    transform: translateY(20px);
+    opacity: 0;
+    animation: slideIn 0.3s forwards;
+    position: relative;
+    overflow: hidden;
+}
+
+@keyframes slideIn {
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.notification-title {
+    color: #FFEB3B; /* Default Yellow */
+    font-size: 36px; /* Increased font size */
+    font-weight: 700; /* Using 700 for SF-Pro-Display-Black */
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+    line-height: 1;
+    font-family: 'San-Francisco', 'Segoe UI', sans-serif;
+    text-shadow: 2px 2px 4px #000000;
+}
+
+.notification.error .notification-title {
+    color: #ff4444; /* Red */
+}
+
+.notification.info .notification-title {
+    color: #33b5e5; /* Blue */
+}
+
+.notification.success .notification-title {
+    color: #00C851; /* Green */
+}
+
+.notification-progress-container {
+    width: 20%;
+    margin: 0 auto 10px auto;
+    height: 6px;
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.notification-progress-bar {
+    height: 100%;
+    background-color: white;
+    width: 100%;
+    transform-origin: left;
+}
+
+.notification-text {
+    color: white;
+    font-size: 20px; /* Increased font size */
+    font-weight: 400;
+    text-shadow: 2px 2px 4px #000000;
+}
