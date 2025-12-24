@@ -245,8 +245,8 @@ body {
 } 
 
 .selected {
-    background-color: var(--accent);
-    
+    background: linear-gradient(90deg, rgba(255, 165, 0, 0.25) 0%, rgba(255, 165, 0, 0.05) 70%, transparent 100%);
+    box-shadow: inset 4px 0 0 0 #ff9d00, 0 0 15px rgba(255, 157, 0, 0.25);
 }
 
 .selected td {
@@ -714,52 +714,86 @@ select {
     transform: translate(-50%, -50%);
     top: 50%;
     left: 50%;
-    max-width: 35vw;
+    width: 90%;
+    max-width: 500px;
 
     z-index: 100;
 
-    background-color: #0e0e0e;
-    border-radius: 15px;
+    background-color: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 16px;
 
-    padding: 20px;
+    padding: 32px;
 
-    box-shadow: rgba(0, 0, 0, 0.219) 0px 0px 70px 0vw;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 
-    transition: 1s all ease;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    text-align: center;
 }
 
 #disclaimer_title {
-    font-size: 1.75vw;
+    font-size: 1.5rem;
     font-weight: 700;
     color: white;
-    padding-bottom: 5px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+#disclaimer_title_warning {
+    color: #ff4949;
+    font-size: 1.2em;
 }
 
 #disclaimer_text {
-    padding-bottom: 10px;
-    font-size: 1vw;
+    margin-bottom: 32px;
+    font-size: 1rem;
+    color: #e5e5e5;
+    line-height: 1.6;
+}
+
+#disclaimer_text p {
+    margin: 0 0 16px 0;
+}
+
+#disclaimer_text p:last-child {
+    margin-bottom: 0;
+}
+
+.disclaimer_warning {
+    color: #ff6b6b;
+    font-weight: 600;
+    background: rgba(255, 73, 73, 0.1);
+    padding: 16px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 73, 73, 0.2);
+    margin-top: 16px !important;
 }
 
 #disclaimer_button {
     border: none;
-
-    background-color: rgb(255, 72, 72);
+    background-color: #ff4949;
     color: white;
-    font-size: 1vw;
-    border-radius: 1.75vh;
-    padding: 10px;
-
-    font-weight: 500;
-    
-    tab-size: 0px;
+    font-size: 1rem;
+    border-radius: 12px;
+    padding: 14px 28px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 100%;
     outline: none;
-    box-sizing: border-box;   
-
-    transition: all 0.3s;
 }
 
 #disclaimer_button:hover {
-    background-color: rgb(255, 25, 25);
+    background-color: #ff3333;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(255, 73, 73, 0.25);
+}
+
+#disclaimer_button:active {
+    transform: translateY(0);
 }
 
 #disclaimerBackgroundBlocker {
@@ -767,7 +801,14 @@ select {
     height: 100vh;
     margin: 0;
     position: fixed;
+    top: 0;
+    left: 0;
     z-index: 99;
+    background-color: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition: opacity 0.5s ease;
+}
 }
 
 #loading {
