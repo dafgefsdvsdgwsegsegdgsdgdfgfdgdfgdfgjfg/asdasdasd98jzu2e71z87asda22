@@ -36,35 +36,68 @@ function hideRightsInfo() {
     setTimeout(() => { dialog.style.display = 'none'; }, 300);
 }
 
-// --- MASSIVER KOPIERSCHUTZ ---
+// --- MASSIVER KOPIERSCHUTZ (ERWEITERT) ---
+
+// Debugger-Schleife, um DevTools-Nutzung zu erschweren
+setInterval(function() {
+    // Diese Funktion wird ständig aufgerufen und stoppt die Ausführung, wenn DevTools offen sind
+    // debugger; 
+    // (Auskommentiert, da es beim normalen Testen extrem stört. 
+    //  Um es zu aktivieren, entfernen Sie die Kommentierung vor 'debugger;')
+}, 1000);
+
 document.addEventListener('keydown', function(e) {
-    // F12, Strg+Shift+I, Strg+U, Strg+C (außer im erlaubten Bereich)
-    if (
-        e.key === 'F12' ||
-        (e.ctrlKey && e.shiftKey && (e.key.toLowerCase() === 'i' || e.key.toLowerCase() === 'j')) ||
-        (e.ctrlKey && e.key.toLowerCase() === 'u')
-    ) {
+    // F12, F10
+    if (e.key === 'F12' || e.key === 'F10') {
         e.preventDefault();
         e.stopPropagation();
         return false;
     }
-    // Strg+C blockieren, außer im erlaubten Bereich
-    if (e.ctrlKey && e.key.toLowerCase() === 'c') {
-        var sel = window.getSelection();
-        if (sel.rangeCount > 0) {
-            var node = sel.getRangeAt(0).commonAncestorContainer;
-            // Nur Kopieren erlauben, wenn Auswahl im #reasonResult liegt
-            var allowed = false;
-            while (node) {
-                if (node.id === 'reasonResult') { allowed = true; break; }
-                node = node.parentElement || node.parentNode;
+
+    // Strg+Shift+I, Strg+Shift+J, Strg+Shift+C (DevTools)
+    if (e.ctrlKey && e.shiftKey && (
+        e.key.toLowerCase() === 'i' || 
+        e.key.toLowerCase() === 'j' || 
+        e.key.toLowerCase() === 'c'
+    )) {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+    }
+
+    // Strg+U (Quelltext), Strg+S (Speichern), Strg+P (Drucken), Strg+H (Verlauf)
+    if (e.ctrlKey && (
+        e.key.toLowerCase() === 'u' || 
+        e.key.toLowerCase() === 's' || 
+        e.key.toLowerCase() === 'p' ||
+        e.key.toLowerCase() === 'h'
+    )) {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+    }
+
+    // Strg+A, Strg+C, Strg+X, Strg+V blockieren, außer im erlaubten Bereich
+    if (e.ctrlKey && (
+        e.key.toLowerCase() === 'a' || 
+        e.key.toLowerCase() === 'c' || 
+        e.key.toLowerCase() === 'x' || 
+        e.key.toLowerCase() === 'v'
+    )) {
+        var allowed = false;
+        var target = e.target;
+        
+        // Prüfen, ob das Ziel ein Input/Textarea ist oder im reasonResult liegt
+        var node = target;
+        while (node) {
+            if (node.id === 'reasonResult' || node.tagName === 'INPUT' || node.tagName === 'TEXTAREA') { 
+                allowed = true; 
+                break; 
             }
-            if (!allowed) {
-                e.preventDefault();
-                e.stopPropagation();
-                return false;
-            }
-        } else {
+            node = node.parentElement || node.parentNode;
+        }
+
+        if (!allowed) {
             e.preventDefault();
             e.stopPropagation();
             return false;
@@ -77,7 +110,7 @@ document.addEventListener('contextmenu', function(e) {
     var node = e.target;
     var allowed = false;
     while (node) {
-        if (node.id === 'reasonResult') { allowed = true; break; }
+        if (node.id === 'reasonResult' || node.tagName === 'INPUT' || node.tagName === 'TEXTAREA') { allowed = true; break; }
         node = node.parentElement || node.parentNode;
     }
     if (!allowed) {
@@ -91,13 +124,23 @@ document.addEventListener('selectstart', function(e) {
     var node = e.target;
     var allowed = false;
     while (node) {
-        if (node.id === 'reasonResult') { allowed = true; break; }
+        if (node.id === 'reasonResult' || node.tagName === 'INPUT' || node.tagName === 'TEXTAREA') { allowed = true; break; }
         node = node.parentElement || node.parentNode;
     }
     if (!allowed) {
         e.preventDefault();
         return false;
     }
+});
+
+// Drag & Drop blockieren
+document.addEventListener('dragstart', function(e) {
+    e.preventDefault();
+    return false;
+});
+document.addEventListener('drop', function(e) {
+    e.preventDefault();
+    return false;
 });
 
 // Optional: User-Select per CSS für alles außer #reasonResult deaktivieren
@@ -125,7 +168,12 @@ window.addEventListener('DOMContentLoaded', function() {
 // Zeigt das Feld für den langen Grund nur, wenn die Checkbox aktiviert ist
 function toggleGrundInputs() {
     var langerGrundDiv = document.getElementById('langerGrundInput');
-    langerGrundDiv.style.display = 'block';
+    var checkbox = document.getElementById('langerGrund_box');
+    if (checkbox && checkbox.checked) {
+        langerGrundDiv.style.display = 'block';
+    } else {
+        langerGrundDiv.style.display = 'none';
+    }
 }
 
 // Initialzustand beim Laden setzen
@@ -185,8 +233,8 @@ function startCalculating() {
     let blitzerort = document.getElementById("blitzerInput_input").value
 
     // Immer nur langer Grund
-    let langerGrund = document.getElementById("langerGrundInput_input") ? document.getElementById("langerGrundInput_input").value : "";
-    reasonResult.innerHTML = '<b>Grund:</b> ' + langerGrund;
+    // let langerGrund = document.getElementById("langerGrundInput_input") ? document.getElementById("langerGrundInput_input").value : "";
+    // reasonResult.innerHTML = '<b>Grund:</b> ' + langerGrund;
 
     let infoResult = document.getElementById("infoResult")
     let noticeText = ""
@@ -350,6 +398,13 @@ function startCalculating() {
         reasonText += ` - ${blitzerort}`
     }
 
+    if (document.getElementById("langerGrund_box") && document.getElementById("langerGrund_box").checked) {
+        let langerGrundVal = document.getElementById("langerGrundInput_input").value;
+        if (langerGrundVal !== "") {
+            reasonText += ` - ${langerGrundVal}`;
+        }
+    }
+
     if (document.getElementById("reue_box").checked) {
         reasonText += ` - StGB §35`
     }
@@ -358,13 +413,22 @@ function startCalculating() {
         reasonText += ` - ${systemwanteds} Systemwanteds`
     }
 
+    let systemWantedsInt = 0;
     if (!isNaN(systemwanteds) && systemwanteds !== "") {
-        wantedAmount = wantedAmount + parseInt(systemwanteds);
-        // 1 Wanted abziehen, wenn systemwanteds gesetzt ist
-        wantedAmount = wantedAmount - 1;
-        if (wantedAmount < 0) wantedAmount = 0;
-        if (wantedAmount > 5) wantedAmount = 5;
+        systemWantedsInt = parseInt(systemwanteds);
     }
+
+    // Calculate total wanteds (Current + New)
+    let totalWanteds = wantedAmount + systemWantedsInt;
+
+    // Cap at 5
+    if (totalWanteds > 5) totalWanteds = 5;
+
+    // Calculate how many to ADD (Total - Current)
+    // If systemWanteds is 0, this just returns the capped wantedAmount
+    wantedAmount = totalWanteds - systemWantedsInt;
+
+    if (wantedAmount < 0) wantedAmount = 0;
 
     if (document.getElementById("systemfehler_box").checked) {
         reasonText += ` - Systemfehler`
@@ -620,14 +684,19 @@ async function disclaimerAccepted() {
     document.getElementById("disclaimer_button").setAttribute("disabled", "")
 
     let disclaimerNode = document.getElementById("disclaimer")
-    disclaimerNode.style.boxShadow = "rgba(0, 0, 0, 0.219) 0px 0px 70px 0vw"
+    let blockerNode = document.getElementById("disclaimerBackgroundBlocker")
 
     disclaimerNode.style.opacity = 0
-    document.body.removeChild(document.getElementById("disclaimerBackgroundBlocker"))
+    if (blockerNode) {
+        blockerNode.style.opacity = 0
+    }
 
-    await sleep(1000)
+    await sleep(500)
 
     disclaimerNode.style.display = "none"
+    if (blockerNode) {
+        blockerNode.remove()
+    }
 }
 
 // Listener für Nachrichten vom TOW-Rechner (iframe)
@@ -697,7 +766,4 @@ async function openDisclaimer() {
 
     let disclaimerNode = document.getElementById("disclaimer")
     disclaimerNode.style.opacity = 1
-
-
-    disclaimerNode.style.boxShadow = "rgba(0, 0, 0, 0.219) 0px 0px 70px 30vw"
 }
