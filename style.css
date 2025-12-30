@@ -94,8 +94,8 @@
     --textprim: #bababa;
     --textsecond: #ffffff;
     --button: #2b2b2b;
-    --accent: #563b00;
-    --buttonhover: orange;
+    --accent: #002b36;
+    --buttonhover: #89CFF0;
     --background: #1d1d1d;
     --inputs: #121212;
 }
@@ -245,8 +245,8 @@ body {
 } 
 
 .selected {
-    background: linear-gradient(90deg, rgba(255, 165, 0, 0.25) 0%, rgba(255, 165, 0, 0.05) 70%, transparent 100%);
-    box-shadow: inset 4px 0 0 0 #ff9d00, 0 0 15px rgba(255, 157, 0, 0.25);
+    background: linear-gradient(90deg, rgba(137, 207, 240, 0.25) 0%, rgba(137, 207, 240, 0.05) 70%, transparent 100%);
+    box-shadow: inset 4px 0 0 0 #89CFF0;
 }
 
 .selected td {
@@ -354,9 +354,9 @@ body {
     font-size: 20px;
 }
 
-/* Orange styling for all paragraph cells */
+/* Baby blue styling for all paragraph cells */
 .paragraph {
-    color: #ff8c00;
+    color: #89CFF0;
 }
 
 
@@ -397,15 +397,15 @@ body {
 }
 
 #showButton:hover {
-    background-color: rgb(255, 165, 0);
+    background-color: #89CFF0;
 }
 
 #showAttorneysButton:hover {
-    background-color: rgb(255, 165, 0);
+    background-color: #89CFF0;
 }
 
 #showTowButton:hover {
-    background-color: rgb(255, 165, 0);
+    background-color: #89CFF0;
 }
 
 #resetButton:hover {
@@ -413,7 +413,7 @@ body {
 }
 
 #gesetz:hover {
-    background-color: rgb(255, 123, 0);
+    background-color: #89CFF0;
 }
 
 
@@ -558,7 +558,7 @@ body {
   /* Firefox */
   #notepadArea textarea {
     scrollbar-width: auto;
-    scrollbar-color: #ffdd00 #ffffff00;
+    scrollbar-color: #89CFF0 #ffffff00;
   }
 
   /* Chrome, Edge, and Safari */
@@ -571,7 +571,7 @@ body {
   }
 
   #notepadArea textarea::-webkit-scrollbar-thumb {
-    background-color: #ffdd00;
+    background-color: #89CFF0;
     border-radius: 10px;
     border: 1px solid #ffffff00;
   }
@@ -851,7 +851,7 @@ select {
 }
 
 .dotContent {
-    background-color: rgb(235,194,65);
+    background-color: #89CFF0;
     height: 100%;
     width: 100%;
     border-radius: 8px;
